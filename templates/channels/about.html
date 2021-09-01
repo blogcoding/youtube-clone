@@ -1,0 +1,28 @@
+{% extends 'channels/detail.html' %}
+
+
+{% block channel__inner %}
+<div class="channel__about">
+  <div class="channel__about-left">
+    {% if channel.description %}
+    <div class="channel__about-block">
+      <h3 class="channel__about-block-title">Описание</h3>
+      <p class="channel__about-block-text">{{channel.description}}</p>
+    </div>
+    {% endif %}
+
+
+  </div>
+  <div class="channel__about-stats">
+    <div class="channel__stats-item">
+      <h3 class="channel__about-title">Статистика</h3>
+    </div>
+    <div class="channel__stats-item">
+      <p>Дата регистрации: {{channel.created}}</p>
+    </div>
+    <div class="channel__stats-item">
+      <p>2 425 713 просмотров</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

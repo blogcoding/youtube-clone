@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Понравивишиеся - YouTube
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="playlist">
+
+  <div class="playlist__left">
+    <a href="" class="playlist__image">
+      <img src="{{playlist.videos.first.preview.url}}" alt="" class="playlist__image-img">
+      <div class="playlist__image-play">
+        <svg viewBox="0 0 24 24" width='24px'>
+          <path d="M8 5v14l11-7z" fill='#fff'></path>
+        </svg>
+        Воспроизвести все
+      </div>
+    </a>
+    <h1 class="playlist__title">{{playlist.title}}</h1>
+    <div class="playlist__info">
+      {{playlist.videos.count}} видео • {{playlist.views}} просмотров • Обновлено {{playlist.updated|date:'d.m.Y'}}
+    </div>
+    <div class="playlist__channel">
+      <img src="{{playlist.user.channel.avatar.url}}" alt="" class="playlist__channel-avatar">
+      <a href="{% url 'channel-detail' slug=playlist.user.channel.slug %}"
+        class="playlist__channel-title">{{playlist.user.channel.title}}</a>
+    </div>
+  </div>
+
+  <div class="playlist__right">
+    <div class="playlist__list">
+
+      {% for video in playlist.videos.all %}
+      <div class="playlist__video" x-data="{show: false}">
+        <a href="{% url 'video-detail' slug=video.slug %}" class="playlist__video-link"></a>
+        <div class="playlist__video-image">
+          <img src="{{video.preview.url}}" alt="">
+          <span class="playlist__video-time">48:15</span>
+        </div>
+        <div class="playlist__video-info">
+          <h2 class="playlist__video-title">{{video.title}}</h2>
+          <a href="" class="playlist__video-channel-link">{{video.channel.title}}</a>
+        </div>
+        <button class="header__round-button playlist__video-button" @click='show = !show'>
+          <svg viewBox="0 0 24 24" width='24px'>
+            <path
+              d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+              fill='#909090'></path>
+          </svg>
+        </button>
+        <div class="playlist__actions-menu" x-show="show" @click.away='show = false'>
+          <a href="{% url 'remove-from-playlist' video_slug=video.slug playlist_slug=playlist.slug %}"
+            class="playlist__actions-menu-item">
+            <svg viewBox="0 0 24 24" width='24px'>
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill='#909090'>
+              </path>
+            </svg>
+            <span>
+              Удалить из плейлиста "{{playlist.title}}"
+            </span>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

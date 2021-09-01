@@ -1,0 +1,14 @@
+{% extends 'channels/detail.html' %}
+
+
+{% block channel__inner %}
+<div class="channel__community">
+  {% if channel.community %}
+
+  {% else %}
+  <div class="channel__community-empty">
+    <p>Автор канала пока не оставил ни одной записи.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

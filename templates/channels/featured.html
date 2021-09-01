@@ -1,0 +1,15 @@
+{% extends 'channels/detail.html' %}
+
+
+{% block channel__inner %}
+<div class="channel__featured">
+  {% if featured %}
+
+  {% else %}
+  <div class="channel__featured-empty">
+    <p>Здесь пока ничего нет.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{channel.title}} - YouTube
+{% endblock %}
+
+{% block content %}
+
+<section class="channel">
+  <div class="channel__banner">
+    <img src="{{channel.banner.url}}" alt="Channel Banner" class="channel__banner-img">
+  </div>
+  <div class="channel__container">
+    <div class="channel__header container">
+      <div class="channel__header-left">
+        <img src="{{channel.avatar.url}}" alt="" class="channel__header-avatar">
+        <div class="channel__header-info">
+          <h1 class="channel__header-title">{{channel.title}}</h1>
+          <p class="channel__header-subs">{{channel.subscribers}} подписчиков</p>
+        </div>
+      </div>
+      {% if subscribed %}
+      <div class="channel__header-right active">
+        <a href="{% url 'channel-unsubscribe' channel_slug=channel.slug %}" class="channel__header-subscribe">Вы
+          подписаны</a>
+        <div class="channel__header-notifications">
+          <button class="header__round-button">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"
+                fill='#909090'>
+              </path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      {% else %}
+      <div class="channel__header-right">
+        <a href="{% url 'channel-subscribe' channel_slug=channel.slug %}"
+          class="channel__header-subscribe">Подписаться</a>
+
+      </div>
+      {% endif %}
+
+    </div>
+    <div class="channel__tabs container">
+      <a href="{% url 'channel-detail' slug=channel.slug %}"
+        class="channel__tab {% if activeTab == 'featured' %}active{% endif %}">
+        <span class="channel__tab-text">Главная</span>
+        <div class="channel__tab-select"></div>
+      </a>
+      <a href="{% url 'channel-videos' slug=channel.slug %}"
+        class="channel__tab {% if activeTab == 'videos' %}active{% endif %}">
+        <span class="channel__tab-text">Видео</span>
+        <div class="channel__tab-select"></div>
+      </a>
+      <a href="{% url 'channel-playlists' slug=channel.slug %}"
+        class="channel__tab {% if activeTab == 'playlists' %}active{% endif %}">
+        <span class="channel__tab-text">Плейлисты</span>
+        <div class="channel__tab-select"></div>
+      </a>
+      <a href="{% url 'channel-community' slug=channel.slug %}"
+        class="channel__tab {% if activeTab == 'community' %}active{% endif %}">
+        <span class="channel__tab-text">Сообщество</span>
+        <div class="channel__tab-select"></div>
+      </a>
+      <a href="{% url 'channel-channels' slug=channel.slug %}"
+        class="channel__tab {% if activeTab == 'channels' %}active{% endif %}">
+        <span class="channel__tab-text">Каналы</span>
+        <div class="channel__tab-select"></div>
+      </a>
+      <a href="{% url 'channel-about' slug=channel.slug %}"
+        class="channel__tab {% if activeTab == 'about' %}active{% endif %}">
+        <span class="channel__tab-text">О канале</span>
+        <div class="channel__tab-select"></div>
+      </a>
+      <div class="channel__tabs-search"></div>
+    </div>
+    <div class="channel__inner container">
+      {% block channel__inner %}
+
+      {% endblock %}
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+YouTube
+{% endblock %}
+
+{% block content %}
+<div class="tag">
+  <h1 class="tag__title">#{{tag.name}}</h1>
+  <p class="tag__video-count">{{videos_count}} видео</p>
+</div>
+<div class="tag__detail">
+  <section class="videos">
+    {% for video in videos %}
+    <div class="video">
+      <a href="{% url 'video-detail' slug=video.slug %}" class="video__link"></a>
+      <div class="video__img">
+        <a href="" class="video__img-later">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 3.67c-4.58 0-8.33 3.75-8.33 8.33s3.75 8.33 8.33 8.33 8.33-3.75 8.33-8.33S16.58 3.67 12 3.67zm3.5 11.83l-4.33-2.67v-5h1.25v4.34l3.75 2.25-.67 1.08z"
+              fill='white'></path>
+          </svg>
+        </a>
+        <a href="" class="video__img-queue">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M9,10 L18,10 L18,12 L9,12 L9,10 Z M6,6 L18,6 L18,8 L6,8 L6,6 Z M12,14 L18,14 L18,16 L12,16 L12,14 Z M6,12 L6,18 L10,15 L6,12 Z"
+              fill='white'></path>
+          </svg>
+        </a>
+        <span class="video__img-time">48:15</span>
+        <img src="{{video.preview.url}}" alt="preview">
+      </div>
+      <div class="video__info">
+        <a href="{% url 'channel-detail' slug=video.channel.slug %}"><img src="{{video.channel.avatar.url}}"
+            alt="channel avatar" class="video__info-avatar"></a>
+        <div class="video__info-right">
+          <h2 class="video__title">{{video.title}}</h2>
+          <a href="" class="video__channel-title">{{video.channel.title}}</a>
+          <span class="video__stats">{{video.views}} просмотров &middot; {{video.created|timesince}} назад</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'channels/detail.html' %}
+
+
+{% block channel__inner %}
+<div class="channel__channels">
+  {% if channel.channels %}
+
+  {% else %}
+  <div class="channel__channels-empty">
+    <p>Здесь нет ссылок на другие каналы.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

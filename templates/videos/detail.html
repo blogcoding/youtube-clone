@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+{% block title %}
+{{video.title}} - YouTube
+{% endblock %}
+
+{% block content %}
+<div class="video__detail">
+  <div class="video__detail-left">
+    <div class="video__detail-player">
+      <video width="100%" height="100%" controls>
+        <source src="{{video.video.url}}" type='video/mp4'>
+      </video>
+    </div>
+    {% if video.tags %}
+    <div class="video__detail-tags">
+      {% for tag in video.tags.all %}
+      <a href="{% url 'tag-detail' tag.slug %}">#{{ tag.name }}</a>{% if not forloop.last %} {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+    <h1 class="video__detail-title">
+      {{video.title}}
+    </h1>
+    <div class="video__detail-info">
+      <div class="video__detail-stats">
+        {{video.views}} просмотров • {{video.created|date:'d M. Y г.'}}
+      </div>
+      <div class="video__detail-actions">
+        <button class="video__detail-actions-button {% if liked %}active{% endif %}" id="video__detail-like">
+          <svg viewBox="0 0 24 24" width='24px'>
+            <path
+              d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"
+              fill='#909090'></path>
+          </svg>
+          <span id="video__detail-likes-count">
+            {{video.get_likes_count}}
+          </span>
+        </button>
+        <button class="video__detail-actions-button {% if disliked %}active{% endif %}" id="video__detail-dislike">
+          <svg viewBox="0 0 24 24" width='24px'>
+            <path
+              d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"
+              fill='#909090'></path>
+          </svg>
+          <span id="video__detail-dislikes-count">
+            {{video.get_dislikes_count}}
+          </span>
+        </button>
+        <button class="video__detail-actions-button">
+          <svg viewBox="0 0 24 24" width='24px'>
+            <path d="M14 9V3L22 12L14 21V15C8.44 15 4.78 17.03 2 21C3.11 15.33 6.22 10.13 14 9Z" fill='#909090'></path>
+          </svg>
+          Поделиться
+        </button>
+        <button class="video__detail-actions-button">
+          <svg viewBox="0 0 24 24" width='24px'>
+            <path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2 16h8v-2H2v2z" fill='#909090'>
+            </path>
+          </svg>
+          Сохранить
+        </button>
+        <button class="header__round-button">
+          <svg viewBox="0 0 24 24" width='24px' fill='#909090'>
+            <circle cx="5" cy="12" r="2" class="style-scope yt-icon"></circle>
+            <circle cx="12" cy="12" r="2" class="style-scope yt-icon"></circle>
+            <circle cx="19" cy="12" r="2" class="style-scope yt-icon"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="video__detail-channel">
+      <div class="video__detail-channel-info">
+        <img src="{{video.channel.avatar.url}}" alt="" class="video__detail-channel-avatar">
+        <div>
+          <a href="{% url 'channel-detail' slug=video.channel.slug %}"
+            class="video__detail-channel-title">{{video.channel.title}}</a>
+          <p class="video__detail-channel-subs">{{video.channel.subscribers}} подписчиков</p>
+        </div>
+      </div>
+      {% if subscribed %}
+      <div class="video__detail-channel-actions channel__header-right active">
+        <a href="{% url 'channel-unsubscribe' channel_slug=video.channel.slug %}" class="channel__header-subscribe">Вы
+          подписаны</a>
+        <div class="channel__header-notifications">
+          <button class="header__round-button">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"
+                fill='#909090'>
+              </path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      {% else %}
+      <div class="video__detail-channel-actions channel__header-right">
+        <a href="{% url 'channel-subscribe' channel_slug=video.channel.slug %}"
+          class="channel__header-subscribe">Подписаться</a>
+      </div>
+      {% endif %}
+
+    </div>
+    <div class="video__detail-description">
+      <p>{{video.description}}</p>
+      {% if liked %}
+      dasd
+      {% endif %}
+    </div>
+    <div class="video__comments">
+      <span class="video__comments-count">{{video.comments.count}} комментарий</span>
+      <div class="video__comments-create">
+        <img src="{{request.user.channel.avatar.url}}" alt="" class="video__comments-img">
+        <form action="" class="video__comments-form" method="POST">
+          {% csrf_token %}
+          <textarea name="text" id="id_text" placeholder="Оставьте комментарий" required rows="1"
+            maxlength="500"></textarea>
+          <button type="submit" class="video__comments-form-button">Оставить комментарий</button>
+        </form>
+      </div>
+      <div class="video__comments-list">
+        {% for comment in video.comments.all %}
+        <div class="video__comment">
+          <div class="video__comment-left">
+            <img src="{{comment.channel.avatar.url}}" alt="" class="video__comment-img">
+          </div>
+          <div class="video__comment-right">
+            <div class="video__comment-header">
+              <a href="" class="video__comment-channel">{{comment.channel.title}}</a>
+              <span class="video__comment-time">
+                {{comment.created|naturaltime}}
+              </span>
+            </div>
+            <div class="video__comment-content">
+              {{comment.text}}
+            </div>
+            <div class="video__comment-actions">
+              <div class="video__comment-rate">
+                <svg viewBox="0 0 24 24" width='16px'>
+                  <path
+                    d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"
+                    fill='#909090'></path>
+                </svg>
+                11
+              </div>
+              <div class="video__comment-rate">
+                <svg viewBox="0 0 24 24" width='16px'>
+                  <path
+                    d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"
+                    fill='#909090'></path>
+                </svg>
+
+              </div>
+              <button class="video__comment-reply">
+                Ответить
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="video__detail-right">
+    <div class="video__detail-recommendations">
+      {% for rvideo in recommendations %}
+      <div class="recommendations__video">
+        <a href="{% url 'video-detail' slug=rvideo.slug %}" class="recommendations__video-link"></a>
+        <div class="recommendations__video-image">
+          <img src="{{rvideo.preview.url}}" alt="preview">
+          <a href="{% url 'add-to-playlist' video_slug=rvideo.slug playlist_slug='later' %}" class="video__img-later">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 3.67c-4.58 0-8.33 3.75-8.33 8.33s3.75 8.33 8.33 8.33 8.33-3.75 8.33-8.33S16.58 3.67 12 3.67zm3.5 11.83l-4.33-2.67v-5h1.25v4.34l3.75 2.25-.67 1.08z"
+                fill='white'></path>
+            </svg>
+          </a>
+          <a href="" class="video__img-queue">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M9,10 L18,10 L18,12 L9,12 L9,10 Z M6,6 L18,6 L18,8 L6,8 L6,6 Z M12,14 L18,14 L18,16 L12,16 L12,14 Z M6,12 L6,18 L10,15 L6,12 Z"
+                fill='white'></path>
+            </svg>
+          </a>
+          <span class="video__img-time">48:15</span>
+        </div>
+        <div class="recommendations__video-info">
+          <h2 class="recommendations__video-title">
+            {{rvideo.title}}
+          </h2>
+          <a href="{% url 'channel-detail' slug=rvideo.channel.slug %}"
+            class="recommendations__video-channel">{{rvideo.channel.title}}</a>
+          <div class="recommendations__video-stats">{{video.views}} просмотров &middot; {{video.created|timesince}}
+            назад</div>
+        </div>
+        <div class="recommendations__video-actions">
+          <button class="header__round-button">
+            <svg viewBox="0 0 24 24" width='24px'>
+              <path
+                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                fill='#909090'></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $('#video__detail-like').click(() => {
+    $.ajax({
+      url: "{% url 'like-video' slug=video.slug %}",
+      success: function (response) {
+        $('#video__detail-like').toggleClass('active')
+        $('#video__detail-likes-count').text(response.likes_count)
+        if (response.hasOwnProperty('dislikes_count')) {
+          $('#video__detail-dislike').toggleClass('active')
+          $('#video__detail-dislikes-count').text(response.dislikes_count)
+        }
+      },
+    })
+  })
+  $('#video__detail-dislike').click(() => {
+    $.ajax({
+      url: "{% url 'dislike-video' slug=video.slug %}",
+      success: function (response) {
+        $('#video__detail-dislike').toggleClass('active')
+        $('#video__detail-dislikes-count').text(response.dislikes_count)
+        if (response.hasOwnProperty('likes_count')) {
+          $('#video__detail-like').toggleClass('active')
+          $('#video__detail-likes-count').text(response.likes_count)
+        }
+      },
+    })
+  })
+</script>
+{% endblock %}
