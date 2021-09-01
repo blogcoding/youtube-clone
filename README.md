@@ -3,7 +3,7 @@
 Клон популярного видеохостинга YouTube написанный с использование фреймоворка Django. Это мой pet-проект в котором есть большинство функций YouTube, сделан он был за две недельки, так что могут быть недочеты. Правки и дополнения приветствуются!
 
 ## Демо-версия
-https://django-youtube-clone.herokuapp.com/
+https://djangoyoutubeclone.pythonanywhere.com/
 
 ## Локальная установка
 1. Склонируйте репозиторий командой `git clone https://github.com/blogcoding/youtube-clone.git`
